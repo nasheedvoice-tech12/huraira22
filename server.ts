@@ -225,6 +225,11 @@ app.post('/api/ai/catalog-schema', async (req, res) => {
   const engine = resolveServerEngine('velcora-brain');
   const maxCost = VelcoraCreditSystem.calculateMaxCost(engine.id, 4000, 0);
 
+  // Ensure the wallet exists first (creates the initial promotional grant for a
+  // brand-new user). /api/ai/ask does the same before reserving; without this,
+  // the very first request for a new user fails with "Wallet not found".
+  try { await VelcoraCreditSystem.getWallet(userId); } catch (_) {}
+
   let reservation: any = { allowed: true };
   try {
     reservation = await VelcoraCreditSystem.reserveCredits(userId, engine.id, maxCost, requestId);

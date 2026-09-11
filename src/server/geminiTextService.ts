@@ -91,12 +91,23 @@ async function callGeminiText(
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const response = await client.models.generateContent({
-      model: modelId,
-      contents,
-      systemInstruction: opts?.systemInstruction,
-      signal: controller.signal,
-    } as any);
+    // Hard timeout: the @google/genai SDK does not reliably honour AbortSignal,
+    // so race the call against a timer. Without this the invocation hangs until
+    // the serverless platform kills it (504).
+    const response: any = await Promise.race([
+      client.models.generateContent({
+        model: modelId,
+        contents,
+        systemInstruction: opts?.systemInstruction,
+        signal: controller.signal,
+      } as any),
+      new Promise((_resolve, reject) =>
+        setTimeout(
+          () => reject(new GeminiError(`Gemini request timed out after ${timeoutMs}ms`, 408, { isRetryable: true })),
+          timeoutMs
+        )
+      ),
+    ]);
     clearTimeout(timeoutId);
 
     const text = (response as any)?.text || (response as any)?.[0]?.text || '';

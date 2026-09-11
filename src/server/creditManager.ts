@@ -370,13 +370,18 @@ export class VelcoraCreditSystem {
     if (!userId) return [];
     if (db) {
       try {
+        // NOTE: avoid `where(userId).orderBy(timestamp)` — that requires a
+        // composite Firestore index. Equality-only queries use automatic
+        // single-field indexes, so we sort in memory instead.
         const ledgerSnap = await db.collection('prepaid_ledger')
           .where('userId', '==', userId)
-          .orderBy('timestamp', 'desc')
-          .limit(50)
+          .limit(200)
           .get();
-        
-        return ledgerSnap.docs.map(doc => doc.data() as CreditTransaction);
+
+        const rows = ledgerSnap.docs.map(doc => doc.data() as CreditTransaction);
+        return rows
+          .sort((a, b) => String(b.timestamp).localeCompare(String(a.timestamp)))
+          .slice(0, 50);
       } catch (err) {
         disableFirestoreDueToError(err, 'listing ledger');
       }

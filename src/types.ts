@@ -93,6 +93,68 @@ export interface CustomFieldDefinition {
   defaultValue?: any;
 }
 
+export type CatalogFieldType =
+  | 'text' | 'textarea' | 'number' | 'currency' | 'weight'
+  | 'date' | 'boolean' | 'select' | 'multiselect';
+
+export type CatalogFieldScope = 'item' | 'variant' | 'order' | 'customer';
+
+export type CatalogCoreBinding =
+  | 'name' | 'sku' | 'barcode' | 'category' | 'brand' | 'costPrice' | 'sellingPrice'
+  | 'stock' | 'minStock' | 'unit' | 'description' | 'duration' | 'assignedStaff'
+  | 'appointmentRequired' | 'commissionRate' | 'requirements' | 'taxRate';
+
+export interface CatalogField {
+  key: string;
+  label: string;
+  type: CatalogFieldType;
+  scope: CatalogFieldScope;
+  required: boolean;
+  options?: string[];
+  unit?: string;
+  help?: string;
+  examples?: string[];
+  core?: CatalogCoreBinding;
+  safetyCritical?: boolean;
+}
+
+export interface CatalogCapabilities {
+  barcodes: boolean;
+  sku: boolean;
+  stock: boolean;
+  variants: boolean;
+  batchTracking: boolean;
+  serialTracking: boolean;
+  expiry: boolean;
+  weightBased: boolean;
+  appointments: boolean;
+  suppliers: boolean;
+  loyalty: boolean;
+  onlineStore: boolean;
+}
+
+/** AI-adaptive, business-specific catalog definition (see server catalogEngine). */
+export interface CatalogSchema {
+  version: 1;
+  businessType: string;
+  summary: string;
+  itemLabelSingular: string;
+  itemLabelPlural: string;
+  sellingModel: 'unit' | 'weight' | 'service' | 'duration' | 'measure' | 'mixed' | 'custom';
+  units: string[];
+  categories: string[];
+  fields: CatalogField[];
+  capabilities: CatalogCapabilities;
+  workflows: string[];
+  researchNotes?: string;
+  safetyNotes?: string;
+  confidence: number;
+  source: 'ai' | 'fallback';
+  provider?: string;
+  model?: string;
+  generatedAt?: string;
+}
+
 export interface ProductVariant {
   id: UUID;
   sku: string;
@@ -661,6 +723,8 @@ export interface BusinessProfile {
   receiptFooter?: string;
   enabledModules: SystemModuleKey[];
   customFields: CustomFieldDefinition[];
+  /** AI-generated, business-specific catalog definition (optional). */
+  catalogSchema?: CatalogSchema;
   createdAt: ISODateString;
   updatedAt?: ISODateString;
 }

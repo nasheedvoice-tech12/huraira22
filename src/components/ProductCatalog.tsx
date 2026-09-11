@@ -5,6 +5,8 @@ import {
   Globe, DollarSign, Package, X, Check, Barcode as BarcodeIcon, Upload, Loader2, AlertCircle, Sparkles
 } from 'lucide-react';
 import { Product, ProductVariant } from '../types';
+import { DynamicCatalogFields } from './DynamicCatalogFields';
+import { getActiveCatalogSchema, isCoreFieldVisible, coreLabel } from '../lib/catalogSchema';
 import { VelcoraPricingEngine } from '../utils/pricingEngine';
 import { generateBarcodeSvg } from '../utils/barcodeGenerator';
 import { processAndUploadProductImage, validateImageFile } from '../utils/imageOptimizer';
@@ -124,6 +126,10 @@ export const ProductCatalog: React.FC = () => {
   const productQuota = checkResourceLimit(currentPlan, 'maxProducts', products.length);
 
   const isAuthorized = activeUser?.roleId === 'role-owner' || activeUser?.roleId === 'role-manager' || activeUser?.roleId === 'role-admin';
+
+  // AI-adaptive catalog schema for THIS business. Never assumes retail fields.
+  const catalogSchema = getActiveCatalogSchema(activeBusiness);
+  const [dynValues, setDynValues] = useState<Record<string, any>>({});
 
   // Form State
   const [formName, setFormName] = useState('');
@@ -305,6 +311,7 @@ export const ProductCatalog: React.FC = () => {
 
     // Reset dynamic inputs
     setFormBrand('');
+    setDynValues({});
     setFormGenericFormula('');
     setFormStrength('');
     setFormDosageForm('Tablet');
@@ -380,6 +387,7 @@ export const ProductCatalog: React.FC = () => {
     // Load custom inputs
     setFormBrand(p.brand || '');
     const cVals = p.customFieldValues || {};
+    setDynValues(cVals);
     setFormGenericFormula(cVals.generic_formula || '');
     setFormStrength(cVals.strength || '');
     setFormDosageForm(cVals.dosage_form || 'Tablet');
@@ -453,6 +461,9 @@ export const ProductCatalog: React.FC = () => {
     }
 
     const isServiceItem = formIsService;
+
+    // Merge AI-adaptive dynamic field values (schema-driven) into custom values.
+    Object.assign(customVals, dynValues);
 
     const newProd: Product = {
       id: editingProductId || `prod-${Date.now()}`,
@@ -1300,25 +1311,28 @@ export const ProductCatalog: React.FC = () => {
                       </div>
                     </div>
 
-                    <div>
-                      <label className="block font-bold text-slate-700 dark:text-[#94A3B8] mb-1">SKU *</label>
-                      <input
-                        type="text"
-                        required
-                        value={formSku}
-                        onChange={e => setFormSku(e.target.value)}
-                        className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#0B1220] border border-slate-200 dark:border-[#1F2E4D] font-mono text-slate-900 dark:text-[#F8FAFC] focus:border-[#2563EB] focus:outline-hidden"
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-bold text-slate-700 dark:text-[#94A3B8] mb-1">Barcode</label>
-                      <input
-                        type="text"
-                        value={formBarcode}
-                        onChange={e => setFormBarcode(e.target.value)}
-                        className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#0B1220] border border-slate-200 dark:border-[#1F2E4D] font-mono text-slate-900 dark:text-[#F8FAFC] focus:border-[#2563EB] focus:outline-hidden"
-                      />
-                    </div>
+                    {isCoreFieldVisible(catalogSchema, 'sku') && (
+                      <div>
+                        <label className="block font-bold text-slate-700 dark:text-[#94A3B8] mb-1">{coreLabel(catalogSchema, 'sku', 'SKU')}</label>
+                        <input
+                          type="text"
+                          value={formSku}
+                          onChange={e => setFormSku(e.target.value)}
+                          className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#0B1220] border border-slate-200 dark:border-[#1F2E4D] font-mono text-slate-900 dark:text-[#F8FAFC] focus:border-[#2563EB] focus:outline-hidden"
+                        />
+                      </div>
+                    )}
+                    {isCoreFieldVisible(catalogSchema, 'barcode') && (
+                      <div>
+                        <label className="block font-bold text-slate-700 dark:text-[#94A3B8] mb-1">{coreLabel(catalogSchema, 'barcode', 'Barcode')}</label>
+                        <input
+                          type="text"
+                          value={formBarcode}
+                          onChange={e => setFormBarcode(e.target.value)}
+                          className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#0B1220] border border-slate-200 dark:border-[#1F2E4D] font-mono text-slate-900 dark:text-[#F8FAFC] focus:border-[#2563EB] focus:outline-hidden"
+                        />
+                      </div>
+                    )}
                     <div>
                       <label className="block font-bold text-slate-700 dark:text-[#94A3B8] mb-1">Category</label>
                       <input
@@ -1359,25 +1373,38 @@ export const ProductCatalog: React.FC = () => {
                         className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#0B1220] border border-slate-200 dark:border-[#1F2E4D] font-mono font-bold text-slate-900 dark:text-[#F8FAFC] focus:border-[#2563EB] focus:outline-hidden"
                       />
                     </div>
-                    <div>
-                      <label className="block font-bold text-slate-700 dark:text-[#94A3B8] mb-1">Opening Stock</label>
-                      <input
-                        type="number"
-                        value={formStock}
-                        onChange={e => setFormStock(e.target.value)}
-                        className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#0B1220] border border-slate-200 dark:border-[#1F2E4D] text-slate-900 dark:text-[#F8FAFC] focus:border-[#2563EB] focus:outline-hidden"
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-bold text-slate-700 dark:text-[#94A3B8] mb-1">Low Stock Warning Point</label>
-                      <input
-                        type="number"
-                        value={formMinStock}
-                        onChange={e => setFormMinStock(e.target.value)}
-                        className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#0B1220] border border-slate-200 dark:border-[#1F2E4D] text-slate-900 dark:text-[#F8FAFC] focus:border-[#2563EB] focus:outline-hidden"
-                      />
-                    </div>
+                    {isCoreFieldVisible(catalogSchema, 'stock') && (
+                      <div>
+                        <label className="block font-bold text-slate-700 dark:text-[#94A3B8] mb-1">{coreLabel(catalogSchema, 'stock', 'Opening Stock')}</label>
+                        <input
+                          type="number"
+                          value={formStock}
+                          onChange={e => setFormStock(e.target.value)}
+                          className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#0B1220] border border-slate-200 dark:border-[#1F2E4D] text-slate-900 dark:text-[#F8FAFC] focus:border-[#2563EB] focus:outline-hidden"
+                        />
+                      </div>
+                    )}
+                    {isCoreFieldVisible(catalogSchema, 'stock') && (
+                      <div>
+                        <label className="block font-bold text-slate-700 dark:text-[#94A3B8] mb-1">Low Stock Warning Point</label>
+                        <input
+                          type="number"
+                          value={formMinStock}
+                          onChange={e => setFormMinStock(e.target.value)}
+                          className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#0B1220] border border-slate-200 dark:border-[#1F2E4D] text-slate-900 dark:text-[#F8FAFC] focus:border-[#2563EB] focus:outline-hidden"
+                        />
+                      </div>
+                    )}
                   </div>
+
+                  {/* AI-adaptive, business-specific fields (gold purity/weight, meat cuts, etc.) */}
+                  <DynamicCatalogFields
+                    schema={catalogSchema}
+                    values={dynValues}
+                    onChange={(key, value) => setDynValues(prev => ({ ...prev, [key]: value }))}
+                    scope="item"
+                    title={`${catalogSchema.itemLabelSingular} details`}
+                  />
 
                 </div>
               )}

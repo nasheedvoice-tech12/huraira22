@@ -16,7 +16,7 @@ import {
   ReferralPartner, ReferralConfig, ReferralPartnerStats, ReferralPartnerStatus, CommissionStatus,
   SubscriptionPlanConfig, TokenPackageConfig, MasterPaymentTransaction, SubscriptionRecord,
   GlobalPayoutAccount, PayoutRequest, SuperAdminConfig, SuperAdminAuditLog, VelcoraSubscriptionTier,
-  PaymentGatewayProvider, GlobalPayoutProviderType, KeyboardShortcut
+  PaymentGatewayProvider, GlobalPayoutProviderType, KeyboardShortcut, CatalogSchema
 } from '../types';
 import { syncAndRegisterDevice, getOrCreateDeviceId } from '../lib/deviceManager';
 import {
@@ -116,6 +116,7 @@ currency: CurrencyCode;
     taxRate: number;
     taxInclusive: boolean;
     initialRoleName?: string;
+    catalogSchema?: CatalogSchema;
   }) => void;
 
   // Floating AI Assistant
@@ -2704,6 +2705,7 @@ export const VelcoraProvider: React.FC<{ children: React.ReactNode }> = ({ child
     taxRate: number;
     taxInclusive: boolean;
     initialRoleName?: string;
+    catalogSchema?: CatalogSchema;
   }) => {
     const newBizId = `biz-${config.industry}-${Date.now().toString().slice(-4)}`;
     const currencySymbols: Record<string, string> = {
@@ -2730,7 +2732,22 @@ export const VelcoraProvider: React.FC<{ children: React.ReactNode }> = ({ child
       receiptHeader: `*** ${config.businessName.toUpperCase()} ***\nThank you for your business!`,
       receiptFooter: 'Visit us again or order online at velcora.shop',
       enabledModules: config.enabledModules,
-      customFields: [],
+      customFields: (config.catalogSchema?.fields || [])
+        .filter(f => !f.core)
+        .map((f, i) => ({
+          id: `cf-schema-${i}`,
+          entity: (f.scope === 'customer' ? 'customer' : f.scope === 'order' ? 'order' : 'product') as any,
+          name: f.label,
+          key: f.key,
+          type: (['text', 'number', 'date', 'boolean', 'select'].includes(f.type)
+            ? f.type
+            : f.type === 'currency' || f.type === 'weight'
+            ? 'number'
+            : 'text') as any,
+          options: f.options,
+          isRequired: f.required,
+        })),
+      catalogSchema: config.catalogSchema,
       createdAt: new Date().toISOString(),
     };
 

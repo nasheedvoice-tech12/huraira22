@@ -5,7 +5,7 @@ import {
   Percent, Globe, Layers, Wand2, X, RefreshCw, Smartphone,
   ShoppingBag, Utensils, Pill, Wrench, Package, Scissors, Box
 } from 'lucide-react';
-import { IndustryType, SystemModuleKey, CurrencyCode, LocaleCode } from '../types';
+import { IndustryType, SystemModuleKey, CurrencyCode, LocaleCode, CatalogSchema } from '../types';
 import { VELCORA_COLOR_PALETTES } from '../constants/themeColors';
 import { getApiUrl } from '../lib/apiConfig';
 
@@ -148,6 +148,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({ is
   const [aiPrompt, setAiPrompt] = useState<string>('');
   const [isAnalyzingAi, setIsAnalyzingAi] = useState<boolean>(false);
   const [aiRationale, setAiRationale] = useState<string | null>(null);
+  const [aiCatalogSchema, setAiCatalogSchema] = useState<CatalogSchema | null>(null);
 
   if (!isOpen) return null;
 
@@ -197,6 +198,28 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({ is
       if (data.rationale || data.analysis) {
         setAiRationale(data.rationale || data.analysis);
       }
+
+      // Generate the AI-adaptive, business-specific catalog schema using the
+      // platform's unified engine (DeepSeek V4 Pro primary -> Gemini fallback).
+      try {
+        const cRes = await fetch(getApiUrl('/api/ai/catalog-schema'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            businessRequirements: aiPrompt,
+            industry: data.presetId || industry,
+            businessName: data.businessName || businessName,
+            country,
+            currency,
+          }),
+        });
+        const cData = await cRes.json();
+        if (cData.success && cData.schema) {
+          setAiCatalogSchema(cData.schema as CatalogSchema);
+        }
+      } catch (cErr) {
+        console.warn('Business catalog generation failed (non-fatal):', cErr);
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -226,6 +249,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({ is
       enabledModules,
       taxRate,
       taxInclusive,
+      catalogSchema: aiCatalogSchema || undefined,
     });
     onClose();
   };

@@ -1,0 +1,26 @@
+{
+  "id": "8e7d3830-df62-449e-b06f-e1d51a0e07e8",
+  "tenantId": "test-tenant-99",
+  "userId": null,
+  "tier": "permanent",
+  "classification": "decision",
+  "content": "We decided to set the minimum order value for free delivery to $75 going forward.",
+  "summary": "Shipping Policy",
+  "tags": [
+    "decision",
+    "Shipping Policy"
+  ],
+  "entities": [],
+  "concepts": [],
+  "authority": "USER_PROVIDED",
+  "confidence": 0.96,
+  "status": "active",
+  "source": "LearningEngine [user]",
+  "provenance": "Module: Shipping Policy",
+  "expiresAt": null,
+  "createdAt": "2026-08-28T15:16:08.174Z",
+  "updatedAt": "2026-09-03T20:17:35.743Z",
+  "metadata": {
+    "speakerRole": "user"
+  }
+}

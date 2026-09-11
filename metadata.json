@@ -1,0 +1,10 @@
+{
+  "name": "Velcora POS",
+  "description": "Velcora POS - Modern, intuitive Point of Sale & Business Management Platform with live inventory, sales intelligence, and production referral & commission system.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

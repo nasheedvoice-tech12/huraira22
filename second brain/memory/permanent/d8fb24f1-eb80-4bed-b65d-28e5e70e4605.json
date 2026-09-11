@@ -1,0 +1,26 @@
+{
+  "id": "d8fb24f1-eb80-4bed-b65d-28e5e70e4605",
+  "tenantId": "test-tenant-99",
+  "userId": null,
+  "tier": "permanent",
+  "classification": "knowledge",
+  "content": "Store operating hours are Monday through Saturday 9am to 9pm.",
+  "summary": "Store operating hours are Monday through Saturday 9am to 9pm.",
+  "tags": [
+    "operations",
+    "hours"
+  ],
+  "entities": [
+    "Store Schedule"
+  ],
+  "concepts": [],
+  "authority": "PRIMARY",
+  "confidence": 0.95,
+  "status": "active",
+  "source": "Velcora System",
+  "provenance": "User interaction",
+  "expiresAt": null,
+  "createdAt": "2026-09-08T14:24:48.613Z",
+  "updatedAt": "2026-09-08T14:54:43.878Z",
+  "metadata": {}
+}

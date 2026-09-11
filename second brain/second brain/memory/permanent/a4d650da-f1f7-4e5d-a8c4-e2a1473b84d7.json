@@ -1,0 +1,21 @@
+{
+  "id": "a4d650da-f1f7-4e5d-a8c4-e2a1473b84d7",
+  "tenantId": "test-tenant-99",
+  "userId": null,
+  "tier": "permanent",
+  "classification": "decision",
+  "content": "Apex Boutique premium loyalty discount is exactly 15%.",
+  "summary": "Apex Boutique premium loyalty discount is exactly 15%.",
+  "tags": [],
+  "entities": [],
+  "concepts": [],
+  "authority": "USER_PROVIDED",
+  "confidence": 0.95,
+  "status": "active",
+  "source": "Velcora System",
+  "provenance": "User interaction",
+  "expiresAt": null,
+  "createdAt": "2026-08-28T15:16:08.160Z",
+  "updatedAt": "2026-09-03T20:17:35.733Z",
+  "metadata": {}
+}

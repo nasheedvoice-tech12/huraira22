@@ -1,0 +1,25 @@
+{
+  "id": "ab882160-3c1a-4df3-9c20-ffd721ce1512",
+  "tenantId": "audit-store-tenant-99",
+  "userId": "owner-auditor-1",
+  "tier": "user",
+  "classification": "preference",
+  "content": "Store Goal: Expand cashmere knitwear product line and target 40% gross margin for Q4 2026.",
+  "summary": "Store Goal: Expand cashmere knitwear product line and target 40% gross margin for Q4 2026.",
+  "tags": [
+    "q4_strategy",
+    "knitwear",
+    "margin_target"
+  ],
+  "entities": [],
+  "concepts": [],
+  "authority": "USER_PROVIDED",
+  "confidence": 0.95,
+  "status": "active",
+  "source": "Velcora System",
+  "provenance": "User interaction",
+  "expiresAt": null,
+  "createdAt": "2026-09-01T12:10:29.424Z",
+  "updatedAt": "2026-09-01T12:10:29.424Z",
+  "metadata": {}
+}

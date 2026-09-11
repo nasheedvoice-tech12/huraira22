@@ -1,0 +1,34 @@
+{
+  "id": "cfd54799-045f-49b1-a11e-f5cf313ad23c",
+  "tenantId": "test-tenant-99",
+  "userId": null,
+  "tier": "permanent",
+  "classification": "decision",
+  "content": "We decided to set the minimum order value for free delivery to $75 going forward.",
+  "summary": "Store Policy: We decided to set the minimum order value for free delivery to $75 going forward.",
+  "tags": [
+    "decision",
+    "Shipping Policy",
+    "policy",
+    "operations",
+    "business_rules"
+  ],
+  "entities": [
+    "Store Policy"
+  ],
+  "concepts": [],
+  "authority": "USER_PROVIDED",
+  "confidence": 0.96,
+  "status": "active",
+  "source": "LearningEngine [user]",
+  "provenance": "Module: Shipping Policy",
+  "expiresAt": null,
+  "createdAt": "2026-09-08T14:24:48.684Z",
+  "updatedAt": "2026-09-08T14:54:43.940Z",
+  "metadata": {
+    "topicKey": "general_policy",
+    "speakerRole": "user",
+    "lastUpdatedByRole": "user",
+    "supersededPrevious": true
+  }
+}

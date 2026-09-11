@@ -1,0 +1,36 @@
+[
+  {
+    "id": "f29bea6d-c5e4-46a6-b0b2-05986acb4abf",
+    "tenantId": "test-tenant-99",
+    "topic": "Q3 Sales Goal",
+    "oldClaim": "Target is $100,000 top-line revenue.",
+    "newClaim": "Revised target is $150,000 top-line revenue.",
+    "oldTimestamp": "2026-08-01T00:00:00Z",
+    "newTimestamp": "2026-08-15T00:00:00Z",
+    "oldAuthority": "SECONDARY",
+    "newAuthority": "PRIMARY",
+    "oldConfidence": 0.8,
+    "newConfidence": 0.95,
+    "oldSource": "Meeting Notes A",
+    "newSource": "Executive Directive B",
+    "status": "unresolved",
+    "detectedAt": "2026-08-28T15:16:08.172Z"
+  },
+  {
+    "id": "da37360c-e787-4d2f-9ab8-3003346070cb",
+    "tenantId": "tenant-shop-alpha",
+    "topic": "user_goal",
+    "oldClaim": "My goal is $50,000 monthly revenue.",
+    "newClaim": "My goal has changed to $80,000 monthly revenue.",
+    "oldTimestamp": "2026-08-28T16:22:35.532Z",
+    "newTimestamp": "2026-08-28T16:22:35.539Z",
+    "oldAuthority": "USER_PROVIDED",
+    "newAuthority": "USER_PROVIDED",
+    "oldConfidence": 0.98,
+    "newConfidence": 0.98,
+    "oldSource": "LearningEngine [user]",
+    "newSource": "LearningEngine [user]",
+    "status": "unresolved",
+    "detectedAt": "2026-08-28T16:22:35.539Z"
+  }
+]

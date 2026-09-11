@@ -1,0 +1,33 @@
+{
+  "id": "ee76d6a9-49b4-4abf-8264-e58133e35aca",
+  "tenantId": "shop-001",
+  "userId": "user-001",
+  "tier": "user",
+  "classification": "knowledge",
+  "content": "I'm building Velcora as my main software project and my goal is $50,000 monthly revenue.",
+  "summary": "User Project: I'm building Velcora as my main software project and my goal is $50,000 monthly revenue.",
+  "tags": [
+    "knowledge",
+    "General",
+    "project",
+    "software",
+    "user_context",
+    "identity"
+  ],
+  "entities": [
+    "Velcora"
+  ],
+  "concepts": [],
+  "authority": "SYSTEM_GENERATED",
+  "confidence": 0.98,
+  "status": "active",
+  "source": "LearningEngine [undefined]",
+  "provenance": "Module: General",
+  "expiresAt": null,
+  "createdAt": "2026-08-28T16:32:48.112Z",
+  "updatedAt": "2026-08-28T16:34:03.452Z",
+  "metadata": {
+    "topicKey": "user_project",
+    "supersededPrevious": true
+  }
+}

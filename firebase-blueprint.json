@@ -1,0 +1,153 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Represents an authenticated user profile in Velcora.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "ownerBusinessId": { "type": "string" },
+        "authorizedBusinessIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "BusinessProfile": {
+      "title": "Business Profile",
+      "description": "Represents a business workspace in Velcora.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "ownerUid": { "type": "string" },
+        "memberUids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "industry": { "type": "string" },
+        "currency": { "type": "string" },
+        "locale": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "ownerUid"]
+    },
+    "Product": {
+      "title": "Product Item",
+      "description": "Inventory product item.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "name": { "type": "string" },
+        "sku": { "type": "string" },
+        "barcode": { "type": "string" },
+        "category": { "type": "string" },
+        "costPrice": { "type": "number" },
+        "sellingPrice": { "type": "number" },
+        "stockQuantity": { "type": "number" },
+        "reorderPoint": { "type": "number" },
+        "imageUrl": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "businessId", "name", "sellingPrice"]
+    },
+    "Customer": {
+      "title": "Customer Profile",
+      "description": "Customer record with loyalty tracking.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "loyaltyPoints": { "type": "number" },
+        "totalSpent": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "businessId", "name"]
+    },
+    "SaleTransaction": {
+      "title": "Sale Transaction",
+      "description": "Completed POS or online sale order.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "transactionNumber": { "type": "string" },
+        "totalAmount": { "type": "number" },
+        "taxAmount": { "type": "number" },
+        "discountAmount": { "type": "number" },
+        "paymentMethod": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "businessId", "totalAmount"]
+    },
+    "Expense": {
+      "title": "Business Expense",
+      "description": "Expense record for financial tracking.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "category": { "type": "string" },
+        "amount": { "type": "number" },
+        "description": { "type": "string" },
+        "date": { "type": "string" }
+      },
+      "required": ["id", "businessId", "amount"]
+    },
+    "SubUser": {
+      "title": "Sub User",
+      "description": "Authorized staff or sub-user account.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "roleId": { "type": "string" },
+        "active": { "type": "boolean" }
+      },
+      "required": ["id", "businessId", "email", "roleId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User account document containing owner and authorized business mappings"
+    },
+    "/businesses/{businessId}": {
+      "schema": { "$ref": "#/entities/BusinessProfile" },
+      "description": "Main business profile document"
+    },
+    "/businesses/{businessId}/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Subcollection of inventory products"
+    },
+    "/businesses/{businessId}/customers/{customerId}": {
+      "schema": { "$ref": "#/entities/Customer" },
+      "description": "Subcollection of customer profiles"
+    },
+    "/businesses/{businessId}/sales/{saleId}": {
+      "schema": { "$ref": "#/entities/SaleTransaction" },
+      "description": "Subcollection of sales transactions"
+    },
+    "/businesses/{businessId}/expenses/{expenseId}": {
+      "schema": { "$ref": "#/entities/Expense" },
+      "description": "Subcollection of expenses"
+    },
+    "/businesses/{businessId}/subusers/{subuserId}": {
+      "schema": { "$ref": "#/entities/SubUser" },
+      "description": "Subcollection of authorized sub-users"
+    }
+  }
+}

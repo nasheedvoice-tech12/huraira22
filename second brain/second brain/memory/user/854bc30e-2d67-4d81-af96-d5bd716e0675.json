@@ -1,0 +1,32 @@
+{
+  "id": "854bc30e-2d67-4d81-af96-d5bd716e0675",
+  "tenantId": "tenant-shop-alpha",
+  "userId": "user-alex-1",
+  "tier": "user",
+  "classification": "knowledge",
+  "content": "I'm building Velcora as my main software project.",
+  "summary": "User Project: I'm building Velcora as my main software project.",
+  "tags": [
+    "knowledge",
+    "project",
+    "software",
+    "user_context",
+    "identity"
+  ],
+  "entities": [
+    "Velcora"
+  ],
+  "concepts": [],
+  "authority": "USER_PROVIDED",
+  "confidence": 0.98,
+  "status": "active",
+  "source": "LearningEngine [user]",
+  "provenance": "Chat interaction",
+  "expiresAt": null,
+  "createdAt": "2026-08-28T16:22:35.530Z",
+  "updatedAt": "2026-08-28T16:22:35.530Z",
+  "metadata": {
+    "topicKey": "user_project",
+    "speakerRole": "user"
+  }
+}

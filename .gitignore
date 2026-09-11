@@ -1,0 +1,53 @@
+# Environment Variables
+.env
+.env*
+!.env.example
+.dev.env.json
+.dev.pid
+
+# Secrets & Credentials
+credentials.json
+secrets.json
+api-keys.txt
+*.key
+*.pem
+*.pfx
+.rsa
+google-*.json
+firebase-*.json
+aws-*.json
+account*.json
+service-account*.json
+
+# PUBLIC Firebase web config — NOT a secret (ships in the browser bundle) and REQUIRED by the client build
+!firebase-applet-config.json
+!firebase-blueprint.json
+data/.admin_jwt_secret
+data/admin_credentials.json
+data/
+.vercel/
+deploy-out.log
+
+# Database & Sensitive Data
+*.sql
+*.sqlite
+*.sqlite3
+local-credit-db.json
+local-quota-registry.json
+backups/
+backup-data/
+user-data/
+*.csv
+
+# Dependencies & Build
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*.swo
+

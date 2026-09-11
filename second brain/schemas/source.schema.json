@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VelcoraSecondBrainSource",
+  "type": "object",
+  "required": ["id", "tenantId", "title", "sourceType", "createdAt"],
+  "properties": {
+    "id": { "type": "string" },
+    "tenantId": { "type": "string" },
+    "userId": { "type": ["string", "null"] },
+    "title": { "type": "string" },
+    "sourceType": { "type": "string", "enum": ["document", "conversation", "business_ledger", "studio_asset", "user_input", "system_event"] },
+    "immutable": { "type": "boolean", "default": true },
+    "rawContent": { "type": "string" },
+    "filePath": { "type": "string" },
+    "mimeType": { "type": "string" },
+    "hash": { "type": "string" },
+    "createdAt": { "type": "string" },
+    "metadata": { "type": "object" }
+  }
+}

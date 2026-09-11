@@ -1,0 +1,34 @@
+{
+  "id": "2fc51331-a426-4e09-869b-51165cafc8c4",
+  "tenantId": "tenant-shop-alpha",
+  "userId": "user-alex-1",
+  "tier": "user",
+  "classification": "decision",
+  "content": "My goal has changed to $80,000 monthly revenue.",
+  "summary": "User Business Goal: My goal has changed to $80,000 monthly revenue.",
+  "tags": [
+    "decision",
+    "goal",
+    "target",
+    "business_objective",
+    "user_preference"
+  ],
+  "entities": [
+    "Business Goal"
+  ],
+  "concepts": [],
+  "authority": "USER_PROVIDED",
+  "confidence": 0.98,
+  "status": "active",
+  "source": "LearningEngine [user]",
+  "provenance": "Chat interaction",
+  "expiresAt": null,
+  "createdAt": "2026-08-28T16:22:35.532Z",
+  "updatedAt": "2026-08-28T16:22:35.539Z",
+  "metadata": {
+    "topicKey": "user_goal",
+    "speakerRole": "user",
+    "lastUpdatedByRole": "user",
+    "supersededPrevious": true
+  }
+}

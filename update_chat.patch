@@ -1,0 +1,7 @@
+--- src/components/AskVelcoraChat.tsx
++++ src/components/AskVelcoraChat.tsx
+@@ -564,2 +564,2 @@
+-  return (
+-    <div
++  return (
++    <div

@@ -128,12 +128,20 @@ async function callDeepSeek(
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
   let response: Response;
   try {
-    response = await fetch(`${DEEPSEEK_API_BASE}/chat/completions`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-      body: JSON.stringify(body),
-      signal: controller.signal,
-    });
+    response = await Promise.race([
+      fetch(`${DEEPSEEK_API_BASE}/chat/completions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      }),
+      new Promise<Response>((_resolve, reject) =>
+        setTimeout(
+          () => reject(new DeepSeekError(`DeepSeek request timed out after ${timeoutMs}ms`, 408, { isRetryable: true })),
+          timeoutMs + 1500
+        )
+      ),
+    ]);
   } catch (fetchErr: any) {
     clearTimeout(timeoutId);
     if (fetchErr?.name === 'AbortError') {

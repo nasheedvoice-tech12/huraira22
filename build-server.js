@@ -3,12 +3,15 @@ import { build } from 'esbuild';
 async function bundleServer() {
   try {
     console.log('[Build] Bundling server.ts into dist/server.cjs for production server runtime...');
+    // NOTE: We intentionally bundle dependencies (no `packages: 'external'`).
+    // Vercel's Node runtime cannot require() ESM-only packages (uuid@14,
+    // @google/genai, zod, commander) and fails with ERR_REQUIRE_ESM. Inlining
+    // everything into the CJS output removes that failure mode.
     await build({
       entryPoints: ['server.ts'],
       bundle: true,
       platform: 'node',
       format: 'cjs',
-      packages: 'external',
       sourcemap: true,
       outfile: 'dist/server.cjs',
     });
@@ -22,3 +25,4 @@ async function bundleServer() {
 }
 
 bundleServer();
+

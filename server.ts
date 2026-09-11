@@ -251,7 +251,7 @@ app.post('/api/ai/catalog-schema', async (req, res) => {
     const schema = await Promise.race([
       generateCatalogSchema(catalogReq, { userId, requestId, businessId: tenantId }),
       new Promise<never>((_resolve, reject) =>
-        setTimeout(() => reject(new Error('Catalog generation deadline exceeded')), 45000)
+        setTimeout(() => reject(new Error('Catalog generation deadline exceeded')), 52000)
       ),
     ]);
     const estTokens = Math.ceil((JSON.stringify(catalogReq).length + JSON.stringify(schema).length) / 4);

@@ -372,11 +372,11 @@ export async function generateCatalogSchema(
     const normalized: NormalizedRequest & { userId?: string; requestId?: string; businessId?: string } = {
       engineId: 'velcora-brain', // OMNI -> deepseek-v4-pro (thinking) ; fallback gemini-3.5-flash
       messages,
-      maxTokens: 4000,
+      maxTokens: 3000,
       temperature: 0.2,
-      // Keep the total well inside the serverless (60s) budget so that a slow
-      // primary provider fails over to Gemini quickly instead of 504-ing.
-      timeoutMs: 15000,
+      // Budget: 25s primary + 25s fallback = 50s, under the 52s endpoint
+      // deadline and the 60s serverless limit (no 504).
+      timeoutMs: 25000,
       maxRetries: 0,
       userId: ctx?.userId,
       requestId: ctx?.requestId,

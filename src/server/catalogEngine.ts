@@ -376,7 +376,7 @@ export async function generateCatalogSchema(
       temperature: 0.2,
       // Keep the total well inside the serverless (60s) budget so that a slow
       // primary provider fails over to Gemini quickly instead of 504-ing.
-      timeoutMs: 10000,
+      timeoutMs: 15000,
       maxRetries: 0,
       userId: ctx?.userId,
       requestId: ctx?.requestId,

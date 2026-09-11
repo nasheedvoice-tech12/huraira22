@@ -246,7 +246,14 @@ app.post('/api/ai/catalog-schema', async (req, res) => {
   }
 
   try {
-    const schema = await generateCatalogSchema(catalogReq, { userId, requestId, businessId: tenantId });
+    // Hard deadline: guarantee the response returns before the serverless
+    // runtime limit, otherwise fall back to the neutral schema.
+    const schema = await Promise.race([
+      generateCatalogSchema(catalogReq, { userId, requestId, businessId: tenantId }),
+      new Promise<never>((_resolve, reject) =>
+        setTimeout(() => reject(new Error('Catalog generation deadline exceeded')), 45000)
+      ),
+    ]);
     const estTokens = Math.ceil((JSON.stringify(catalogReq).length + JSON.stringify(schema).length) / 4);
     const actualCost = Math.min(maxCost, VelcoraCreditSystem.calculateMaxCost(engine.id, estTokens, 0));
     try { await VelcoraCreditSystem.settleCredits(userId, requestId, actualCost); } catch (_) {}

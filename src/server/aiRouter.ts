@@ -12,6 +12,10 @@ export interface NormalizedRequest {
   messages: { role: 'system' | 'user' | 'assistant'; content: string }[];
   temperature?: number;
   maxTokens?: number;
+  /** Per-provider call timeout. Defaults to 60000ms. */
+  timeoutMs?: number;
+  /** Retries per provider. Defaults to 1. */
+  maxRetries?: number;
 }
 
 export interface NormalizedResponse {
@@ -103,10 +107,10 @@ function getEngineKind(engineId: string): string {
 
 // ─── DeepSeek Call ───────────────────────────────────────────────────────────
 
-async function callDeepSeek(messages: DeepSeekMessage[], engineId: string, maxTokens: number): Promise<NormalizedResponse> {
+async function callDeepSeek(messages: DeepSeekMessage[], engineId: string, maxTokens: number, timeoutMs = 60000, maxRetries = 1): Promise<NormalizedResponse> {
   const route = resolveEngineRoute(engineId);
   const startTime = Date.now();
-  const result: DeepSeekResult = await generateWithRetry(route, messages, { maxTokens, timeoutMs: 60000, maxRetries: 1 });
+  const result: DeepSeekResult = await generateWithRetry(route, messages, { maxTokens, timeoutMs, maxRetries });
   recordProviderSuccess('deepseek');
   return {
     success: true,
@@ -124,11 +128,11 @@ async function callDeepSeek(messages: DeepSeekMessage[], engineId: string, maxTo
 
 // ─── Gemini Fallback Call ────────────────────────────────────────────────────
 
-async function callGemini(messages: GeminiMessage[], engineId: string, maxTokens: number, systemInstruction?: string): Promise<NormalizedResponse> {
+async function callGemini(messages: GeminiMessage[], engineId: string, maxTokens: number, systemInstruction?: string, timeoutMs = 60000, maxRetries = 1): Promise<NormalizedResponse> {
   const kind = getEngineKind(engineId);
   const modelId = GEMINI_FALLBACK_MODELS[kind] || 'gemini-flash-lite-latest';
   const startTime = Date.now();
-  const result: GeminiResult = await generateGeminiText(modelId, messages, { systemInstruction, maxTokens, timeoutMs: 60000, maxRetries: 1 });
+  const result: GeminiResult = await generateGeminiText(modelId, messages, { systemInstruction, maxTokens, timeoutMs, maxRetries });
   recordProviderSuccess('gemini');
   return {
     success: true,
@@ -148,6 +152,8 @@ async function callGemini(messages: GeminiMessage[], engineId: string, maxTokens
 export async function routeAIRequest(req: NormalizedRequest & { userId?: string; requestId?: string; businessId?: string }): Promise<NormalizedResponse> {
   const startTime = Date.now();
   const maxTokens = req.maxTokens || 4096;
+  const reqTimeoutMs = req.timeoutMs && req.timeoutMs > 0 ? req.timeoutMs : 60000;
+  const reqMaxRetries = typeof req.maxRetries === 'number' ? Math.max(0, req.maxRetries) : 1;
   const systemMsg = req.messages.find((m) => m.role === 'system');
   const chatMessages = req.messages.filter((m) => m.role !== 'system');
   const deepSeekMsgs: DeepSeekMessage[] = req.messages as DeepSeekMessage[];
@@ -157,7 +163,7 @@ export async function routeAIRequest(req: NormalizedRequest & { userId?: string;
   const deepSeekAvailable = isProviderAvailable('deepseek');
   if (deepSeekAvailable) {
     try {
-      const result = await callDeepSeek(deepSeekMsgs, req.engineId, maxTokens);
+      const result = await callDeepSeek(deepSeekMsgs, req.engineId, maxTokens, reqTimeoutMs, reqMaxRetries);
       return result;
     } catch (err: any) {
       recordProviderFailure('deepseek');
@@ -179,7 +185,7 @@ export async function routeAIRequest(req: NormalizedRequest & { userId?: string;
   const geminiAvailable = isProviderAvailable('gemini') && isGeminiTextConfigured();
   if (geminiAvailable) {
     try {
-      const result = await callGemini(geminiMsgs, req.engineId, maxTokens, systemMsg?.content);
+      const result = await callGemini(geminiMsgs, req.engineId, maxTokens, systemMsg?.content, reqTimeoutMs, reqMaxRetries);
       const failoverReason = deepSeekAvailable
         ? 'DeepSeek provider error — auto-failed over to Gemini'
         : 'DeepSeek not configured — using Gemini';

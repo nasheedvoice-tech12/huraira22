@@ -374,6 +374,10 @@ export async function generateCatalogSchema(
       messages,
       maxTokens: 6000,
       temperature: 0.2,
+      // Keep the total well inside the serverless (60s) budget so that a slow
+      // primary provider fails over to Gemini quickly instead of 504-ing.
+      timeoutMs: 22000,
+      maxRetries: 0,
       userId: ctx?.userId,
       requestId: ctx?.requestId,
       businessId: ctx?.businessId,
@@ -383,17 +387,17 @@ export async function generateCatalogSchema(
     try {
       res = await routeAIRequest(normalized);
     } catch (err: any) {
-      lastErr = new Error(err?.message || 'AI engine unavailable');
-      continue;
+      // Provider-level failure: return fast (the endpoint supplies a neutral schema).
+      throw new Error(err?.message || 'AI engine unavailable');
     }
 
     if (!res.success || !res.content) {
-      lastErr = new Error(res.error || 'AI catalog generation failed.');
-      continue;
+      throw new Error(res.error || 'AI catalog generation failed.');
     }
 
     const parsed = extractCatalogJson(res.content);
     if (!parsed || !Array.isArray((parsed as any)?.fields)) {
+      // Model replied but not with usable JSON -> one strict repair pass.
       lastErr = new Error('AI returned an unusable catalog payload.');
       continue;
     }

@@ -1,136 +1,208 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary: var(--color-primary, #5B5CE2);
-  --color-primary-hover: var(--color-primary-dark, #4647C7);
-  --color-primary-light: #EEF2FF;
+  --color-primary: var(--color-primary, #5b5ce2);
+  --color-primary-hover: var(--color-primary-dark, #4647c7);
+  --color-primary-light: #eef2ff;
   --color-primary-ring: rgba(91, 92, 226, 0.2);
+
+  /* Small-phone breakpoint used by the app shell (xs:px-3, xs:inline, etc.) */
+  --breakpoint-xs: 26rem;
 }
 
 @layer base {
   :root {
     /* VELCORA OFFICIAL DESIGN TOKENS */
-    --color-primary: #5B5CE2;
-    --color-primary-dark: #4647C7;
-    --color-ai: #4F8CFF;
-    --color-background: #F7F8FC;
-    --color-surface: #FFFFFF;
-    --color-surface-secondary: #F8FAFC;
-    --color-text-primary: #0F172A;
+    --color-primary: #5b5ce2;
+    --color-primary-dark: #4647c7;
+    --color-ai: #4f8cff;
+    --color-background: #f7f8fc;
+    --color-surface: #ffffff;
+    --color-surface-secondary: #f8fafc;
+    --color-text-primary: #0f172a;
     --color-text-secondary: #475569;
-    --color-text-muted: #94A3B8;
-    --color-border: #E2E8F0;
-    --color-success: #10B981;
-    --color-warning: #F59E0B;
-    --color-error: #EF4444;
-    --color-info: #3B82F6;
+    --color-text-muted: #94a3b8;
+    --color-border: #e2e8f0;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-error: #ef4444;
+    --color-info: #3b82f6;
 
     /* Theme Aliases */
-    --bg-app: #F8FAFC;
-    --bg-surface: #FFFFFF;
-    --bg-surface-elevated: #FFFFFF;
-    --bg-surface-hover: #F1F5F9;
-    --border-subtle: #E2E8F0;
-    --border-strong: #CBD5E1;
-    --text-primary: #0F172A;
+    --bg-app: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #ffffff;
+    --bg-surface-hover: #f1f5f9;
+    --border-subtle: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --text-primary: #0f172a;
     --text-secondary: #475569;
-    --text-muted: #94A3B8;
+    --text-muted: #94a3b8;
 
-    --velcora-primary: #5B5CE2;
-    --velcora-primary-dark: #4647C7;
-    --velcora-primary-light: #EEF2FF;
+    --velcora-primary: #5b5ce2;
+    --velcora-primary-dark: #4647c7;
+    --velcora-primary-light: #eef2ff;
 
-    --velcora-success: #10B981;
-    --velcora-success-light: #ECFDF5;
-    --velcora-warning: #F59E0B;
-    --velcora-warning-light: #FFFBEB;
-    --velcora-danger: #EF4444;
-    --velcora-danger-light: #FEF2F2;
-    --velcora-info: #3B82F6;
-    --velcora-info-light: #EFF6FF;
+    --velcora-success: #10b981;
+    --velcora-success-light: #ecfdf5;
+    --velcora-warning: #f59e0b;
+    --velcora-warning-light: #fffbeb;
+    --velcora-danger: #ef4444;
+    --velcora-danger-light: #fef2f2;
+    --velcora-info: #3b82f6;
+    --velcora-info-light: #eff6ff;
   }
 
   .dark {
-    --color-primary: #6366F1;
-    --color-primary-dark: #4F46E5;
-    --color-ai: #4F8CFF;
-    --color-background: #070A14;
-    --color-surface: #0F1424;
-    --color-surface-secondary: #141C33;
-    --color-text-primary: #F8FAFC;
-    --color-text-secondary: #94A3B8;
-    --color-text-muted: #64748B;
-    --color-border: #1F2E4D;
-    --color-success: #10B981;
-    --color-warning: #F59E0B;
-    --color-error: #EF4444;
-    --color-info: #3B82F6;
+    --color-primary: #6366f1;
+    --color-primary-dark: #4f46e5;
+    --color-ai: #4f8cff;
+    --color-background: #070a14;
+    --color-surface: #0f1424;
+    --color-surface-secondary: #141c33;
+    --color-text-primary: #f8fafc;
+    --color-text-secondary: #94a3b8;
+    --color-text-muted: #64748b;
+    --color-border: #1f2e4d;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-error: #ef4444;
+    --color-info: #3b82f6;
 
-    --bg-app: #070A14;
-    --bg-surface: #0F1424;
-    --bg-surface-elevated: #141C33;
-    --bg-surface-hover: #1E2E4A;
-    --border-subtle: #1F2E4D;
-    --border-strong: #2D416B;
-    --text-primary: #F8FAFC;
-    --text-secondary: #94A3B8;
-    --text-muted: #64748B;
+    --bg-app: #070a14;
+    --bg-surface: #0f1424;
+    --bg-surface-elevated: #141c33;
+    --bg-surface-hover: #1e2e4a;
+    --border-subtle: #1f2e4d;
+    --border-strong: #2d416b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
 
-    --velcora-primary: #6366F1;
-    --velcora-primary-dark: #4F46E5;
-    --velcora-primary-light: #1E1B4B;
+    --velcora-primary: #6366f1;
+    --velcora-primary-dark: #4f46e5;
+    --velcora-primary-light: #1e1b4b;
 
-    --velcora-success: #10B981;
-    --velcora-success-light: #064E3B;
-    --velcora-warning: #F59E0B;
-    --velcora-warning-light: #451A03;
-    --velcora-danger: #EF4444;
-    --velcora-danger-light: #450A0A;
-    --velcora-info: #3B82F6;
+    --velcora-success: #10b981;
+    --velcora-success-light: #064e3b;
+    --velcora-warning: #f59e0b;
+    --velcora-warning-light: #451a03;
+    --velcora-danger: #ef4444;
+    --velcora-danger-light: #450a0a;
+    --velcora-info: #3b82f6;
     --velcora-info-light: #172554;
   }
 
   body {
     background-color: var(--bg-app);
     color: var(--text-primary);
-    font-family: "Inter", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family:
+      'Inter',
+      'Plus Jakarta Sans',
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      Helvetica,
+      Arial,
+      sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     touch-action: manipulation;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+    /* Prevent horizontal page-jank from stray fixed-width elements on small screens */
+    overflow-x: hidden;
   }
 
-  h1, h2, h3, h4, .font-heading {
-    font-family: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Respect notched phones / tablets (home indicator & status bar) */
+  @supports (padding: env(safe-area-inset-bottom)) {
+    body {
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+    #velcora-main-header,
+    #velcora-pos-billing-screen {
+      padding-bottom: max(0px, env(safe-area-inset-bottom));
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-heading {
+    font-family:
+      'Plus Jakarta Sans',
+      'Inter',
+      -apple-system,
+      BlinkMacSystemFont,
+      sans-serif;
     letter-spacing: -0.02em;
   }
 
-  .font-mono, kbd, code {
-    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  .font-mono,
+  kbd,
+  code {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
 
-  .dark body, .dark #root {
-    background-color: #070A14;
-    color: #F8FAFC;
+  .dark body,
+  .dark #root {
+    background-color: #070a14;
+    color: #f8fafc;
   }
 
   /* Universal Dark Mode Native Controls */
   .dark select,
   .dark option {
-    background-color: #0F1424;
-    color: #F8FAFC;
+    background-color: #0f1424;
+    color: #f8fafc;
   }
 
-  .dark input[type="date"]::-webkit-calendar-picker-indicator {
+  /* Apple-inspired: crisp pixelated 1rem baseline everywhere else */
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* 2K / 4K ADAPTIVE DENSITY
+     Grow the rem-based design system proportionally on large displays so the
+     app feels native at 1440p/2160p instead of looking like a zoomed phone app.
+     (Order matters: the media queries must override the 16px baseline above.) */
+  @media (min-width: 1920px) and (max-width: 3199px) {
+    html {
+      font-size: 17px;
+    }
+  }
+  @media (min-width: 3200px) {
+    html {
+      font-size: 18px;
+    }
+  }
+
+  /* Prevent iOS auto-zoom on input focus (inputs must be >= 16px on mobile Safari).
+     Only applies on touch/small viewports; desktop typography is untouched. */
+  @media (max-width: 767px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+
+  .dark input[type='date']::-webkit-calendar-picker-indicator {
     filter: invert(1);
     opacity: 0.75;
     cursor: pointer;
   }
 
-  .dark input[type="time"]::-webkit-calendar-picker-indicator {
+  .dark input[type='time']::-webkit-calendar-picker-indicator {
     filter: invert(1);
     opacity: 0.75;
     cursor: pointer;
@@ -145,17 +217,33 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #CBD5E1;
+    background: #cbd5e1;
     border-radius: 9999px;
   }
   .dark ::-webkit-scrollbar-thumb {
-    background: #1F2E4D;
+    background: #1f2e4d;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #94A3B8;
+    background: #94a3b8;
   }
   .dark ::-webkit-scrollbar-thumb:hover {
-    background: #2D416B;
+    background: #2d416b;
+  }
+}
+
+/* ========================================================
+   VIEWPORT HEIGHT FIX (utilities layer so it beats h-screen)
+   Dynamic viewport height: prevents footer clipping behind
+   the mobile browser URL bar on phones/tablets.
+======================================================== */
+@layer utilities {
+  @supports (height: 100dvh) {
+    .h-screen {
+      height: 100dvh !important;
+    }
+    .min-h-screen {
+      min-height: 100dvh !important;
+    }
   }
 }
 
@@ -180,7 +268,8 @@
 }
 
 @keyframes velcora-wave-pulse {
-  0%, 100% {
+  0%,
+  100% {
     filter: drop-shadow(0 0 2px rgba(109, 93, 251, 0.4));
     opacity: 0.75;
   }
@@ -200,7 +289,8 @@
 }
 
 @keyframes velcora-pulse-gentle {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.6;
     transform: scale(1);
   }
@@ -212,22 +302,30 @@
 
 .velcora-living-wave-ambient {
   stroke-dasharray: 80 120;
-  animation: velcora-wave-ambient 6s linear infinite, velcora-wave-pulse 4s ease-in-out infinite;
+  animation:
+    velcora-wave-ambient 6s linear infinite,
+    velcora-wave-pulse 4s ease-in-out infinite;
 }
 
 .velcora-living-wave-medium {
   stroke-dasharray: 100 100;
-  animation: velcora-wave-ambient 3s linear infinite, velcora-wave-pulse 2.5s ease-in-out infinite;
+  animation:
+    velcora-wave-ambient 3s linear infinite,
+    velcora-wave-pulse 2.5s ease-in-out infinite;
 }
 
 .velcora-living-wave-fast {
   stroke-dasharray: 120 80;
-  animation: velcora-wave-ambient 1.8s linear infinite, velcora-wave-pulse 1.5s ease-in-out infinite;
+  animation:
+    velcora-wave-ambient 1.8s linear infinite,
+    velcora-wave-pulse 1.5s ease-in-out infinite;
 }
 
 .velcora-living-wave-routing {
   stroke-dasharray: 140 100;
-  animation: velcora-wave-ambient 2.4s linear infinite, velcora-wave-pulse 2s ease-in-out infinite;
+  animation:
+    velcora-wave-ambient 2.4s linear infinite,
+    velcora-wave-pulse 2s ease-in-out infinite;
 }
 
 .velcora-living-particle-ambient {
@@ -244,37 +342,17 @@
 
 /* Google Account & Premium Aura Rings */
 .velcora-google-ring {
-  background: conic-gradient(
-    from 0deg,
-    #4285F4 0deg,
-    #EA4335 90deg,
-    #FBBC05 180deg,
-    #34A853 270deg,
-    #4285F4 360deg
-  );
+  background: conic-gradient(from 0deg, #4285f4 0deg, #ea4335 90deg, #fbbc05 180deg, #34a853 270deg, #4285f4 360deg);
   animation: velcora-rotate-slow 12s linear infinite;
 }
 
 .velcora-plus-ring {
-  background: conic-gradient(
-    from 0deg,
-    #6D5DFB 0deg,
-    #8B5CF6 120deg,
-    #22D3EE 240deg,
-    #6D5DFB 360deg
-  );
+  background: conic-gradient(from 0deg, #6d5dfb 0deg, #8b5cf6 120deg, #22d3ee 240deg, #6d5dfb 360deg);
   animation: velcora-rotate-slow 10s linear infinite;
 }
 
 .velcora-premium-ring {
-  background: conic-gradient(
-    from 0deg,
-    #6D5DFB 0deg,
-    #A855F7 90deg,
-    #EC4899 180deg,
-    #22D3EE 270deg,
-    #6D5DFB 360deg
-  );
+  background: conic-gradient(from 0deg, #6d5dfb 0deg, #a855f7 90deg, #ec4899 180deg, #22d3ee 270deg, #6d5dfb 360deg);
   animation: velcora-rotate-slow 8s linear infinite;
 }
 
@@ -298,7 +376,8 @@
 
 /* Velcora Primary Brand Glow & Highlights */
 @keyframes velcora-glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 12px 2px rgba(91, 45, 232, 0.25);
   }
   50% {
@@ -312,32 +391,36 @@
 
 /* Glassmorphism & Card Utilities */
 .velcora-card {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 1.25rem;
-  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 1px 2px -1px rgba(15, 23, 42, 0.02);
+  box-shadow:
+    0 1px 3px 0 rgba(15, 23, 42, 0.03),
+    0 1px 2px -1px rgba(15, 23, 42, 0.02);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dark .velcora-card {
-  background: #111C30;
-  border: 1px solid #1F2E4D;
+  background: #111c30;
+  border: 1px solid #1f2e4d;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
 }
 
 .velcora-card:hover {
-  box-shadow: 0 4px 14px 0 rgba(15, 23, 42, 0.05), 0 2px 4px 0 rgba(15, 23, 42, 0.02);
-  border-color: #CBD5E1;
+  box-shadow:
+    0 4px 14px 0 rgba(15, 23, 42, 0.05),
+    0 2px 4px 0 rgba(15, 23, 42, 0.02);
+  border-color: #cbd5e1;
 }
 
 .dark .velcora-card:hover {
   box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.35);
-  border-color: #2D416B;
+  border-color: #2d416b;
 }
 
 .velcora-card-interactive {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 1.25rem;
   box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.03);
   transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
@@ -346,29 +429,31 @@
 
 .velcora-card-interactive:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px -2px rgba(15, 23, 42, 0.06), 0 2px 4px -1px rgba(15, 23, 42, 0.02);
-  border-color: var(--color-primary, #5B5CE2);
+  box-shadow:
+    0 6px 16px -2px rgba(15, 23, 42, 0.06),
+    0 2px 4px -1px rgba(15, 23, 42, 0.02);
+  border-color: var(--color-primary, #5b5ce2);
 }
 
 .velcora-glass-card {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid #E2E8F0;
+  border: 1px solid #e2e8f0;
 }
 
 .dark .velcora-glass-card {
   background: rgba(17, 28, 48, 0.9);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid #1F2E4D;
+  border: 1px solid #1f2e4d;
 }
 
 /* Premium Button & Input States */
 .velcora-input {
-  background-color: #F8FAFC;
-  border: 1px solid #E2E8F0;
-  color: #0F172A;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
   border-radius: 0.75rem;
   padding: 0.5rem 0.875rem;
   font-size: 0.875rem;
@@ -378,26 +463,29 @@
 }
 
 .dark .velcora-input {
-  background-color: #0B101D;
-  border-color: #1F2E4D;
-  color: #F8FAFC;
+  background-color: #0b101d;
+  border-color: #1f2e4d;
+  color: #f8fafc;
 }
 
 .velcora-input:focus {
   outline: none;
-  background-color: #FFFFFF;
-  border-color: var(--color-primary, #5B5CE2);
+  background-color: #ffffff;
+  border-color: var(--color-primary, #5b5ce2);
   box-shadow: 0 0 0 3px rgba(91, 92, 226, 0.15);
 }
 
 .dark .velcora-input:focus {
-  background-color: #111C30;
+  background-color: #111c30;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
 }
 
 /* Low-latency smooth mobile touch targets */
 @media (max-width: 768px) {
-  button, select, input, a {
+  button,
+  select,
+  input,
+  a {
     touch-action: manipulation;
   }
 }
@@ -406,7 +494,8 @@
    PRINT STYLING FOR POS RECEIPTS & INVOICES
 ======================================================== */
 @media print {
-  body, #root {
+  body,
+  #root {
     background: #ffffff !important;
     color: #000000 !important;
     background-image: none !important;
@@ -450,32 +539,33 @@
     box-shadow: none !important;
     border-color: #333333 !important;
   }
-}/* ========================================================
+} /* ========================================================
    RTL (RIGHT-TO-LEFT) LANGUAGE SUPPORT (URDU, ARABIC)
 ======================================================== */
-[dir="rtl"], html.rtl-active {
+[dir='rtl'],
+html.rtl-active {
   text-align: right;
 }
 
-[dir="rtl"] input,
-[dir="rtl"] textarea,
-[dir="rtl"] select {
+[dir='rtl'] input,
+[dir='rtl'] textarea,
+[dir='rtl'] select {
   text-align: right;
 }
 
-[dir="rtl"] .ltr-force {
+[dir='rtl'] .ltr-force {
   direction: ltr !important;
   text-align: left !important;
 }
 
-[dir="rtl"] code,
-[dir="rtl"] pre,
-[dir="rtl"] .font-mono {
+[dir='rtl'] code,
+[dir='rtl'] pre,
+[dir='rtl'] .font-mono {
   direction: ltr !important;
   text-align: left !important;
 }
 
-[dir="rtl"] .barcode-container,
-[dir="rtl"] svg.barcode {
+[dir='rtl'] .barcode-container,
+[dir='rtl'] svg.barcode {
   direction: ltr !important;
 }

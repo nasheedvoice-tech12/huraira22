@@ -158,7 +158,7 @@ export const InventoryManagement: React.FC = () => {
                       __html: generateBarcodeSvg(selectedLabelProduct.barcode || selectedLabelProduct.sku, 150, 28),
                     }}
                   />
-                  <div className="text-[8px] text-neutral-500 font-medium">{activeBusiness.name}</div>
+                  <div className="text-[10px] text-neutral-500 font-medium">{activeBusiness.name}</div>
                 </div>
               ))}
             </div>

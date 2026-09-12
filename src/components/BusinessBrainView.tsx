@@ -695,7 +695,7 @@ export const BusinessBrainView: React.FC = () => {
                           <span className="text-[11px] font-black text-slate-900 dark:text-white">
                             {currency || '$'}{(salesByCategory.total || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}
                           </span>
-                          <span className="text-[8px] text-slate-400 font-bold uppercase">Total</span>
+                          <span className="text-[10px] text-slate-400 font-bold uppercase">Total</span>
                         </div>
                       </div>
 

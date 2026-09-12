@@ -405,7 +405,7 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Bell className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             {unreadNotifsCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-rose-500 text-white text-[8px] sm:text-[9px] font-black flex items-center justify-center ring-2 ring-white dark:ring-[#0B101D]">
+              <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-4 sm:h-4 rounded-full bg-rose-500 text-white text-[10px] font-black flex items-center justify-center ring-2 ring-white dark:ring-[#0B101D]">
                 {unreadNotifsCount > 9 ? '9+' : unreadNotifsCount}
               </span>
             )}

@@ -362,9 +362,9 @@ export async function generateCatalogSchema(
 
   let lastErr: Error | null = null;
 
-  // Up to 2 attempts: the second is a strict JSON repair pass (guards against
-  // truncated / prose-wrapped replies). Still the SAME unified engine.
-  for (let attempt = 0; attempt < 2; attempt++) {
+  // Single attempt: two provider tries (16s + 16s = 32s) must fit inside the
+  // endpoint deadline, so the repair pass is disabled here.
+  for (let attempt = 0; attempt < 1; attempt++) {
     const messages = attempt === 0
       ? baseMessages
       : [...baseMessages, { role: 'user' as const, content: REPAIR_INSTRUCTION }];
@@ -372,11 +372,13 @@ export async function generateCatalogSchema(
     const normalized: NormalizedRequest & { userId?: string; requestId?: string; businessId?: string } = {
       engineId: 'velcora-brain', // OMNI -> deepseek-v4-pro (thinking) ; fallback gemini-3.5-flash
       messages,
-      maxTokens: 3000,
+      // NOTE: maxTokens must be generous — reasoning ("thinking") tokens count
+      // against it, and a truncated reply loses the JSON payload.
+      maxTokens: 8000,
       temperature: 0.2,
-      // Budget: 25s primary + 25s fallback = 50s, under the 52s endpoint
-      // deadline and the 60s serverless limit (no 504).
-      timeoutMs: 25000,
+      // Budget: 16s primary + 16s fallback = 32s, comfortably inside the 52s
+      // endpoint deadline and the 60s serverless limit (no 504).
+      timeoutMs: 16000,
       maxRetries: 0,
       userId: ctx?.userId,
       requestId: ctx?.requestId,

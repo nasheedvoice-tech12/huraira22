@@ -370,15 +370,17 @@ export async function generateCatalogSchema(
       : [...baseMessages, { role: 'user' as const, content: REPAIR_INSTRUCTION }];
 
     const normalized: NormalizedRequest & { userId?: string; requestId?: string; businessId?: string } = {
-      engineId: 'velcora-brain', // OMNI -> deepseek-v4-pro (thinking) ; fallback gemini-3.5-flash
+      // NORMAL_CHAT -> deepseek-v4-flash (primary) with gemini-flash-lite-latest
+      // (fallback). Both are fast enough for a structured JSON task inside the
+      // 60s serverless budget. The heavier "thinking" tier (v4-pro) is used
+      // elsewhere; here reliability of the catalog build matters most.
+      engineId: 'velcora-chat',
       messages,
-      // NOTE: maxTokens must be generous — reasoning ("thinking") tokens count
-      // against it, and a truncated reply loses the JSON payload.
-      maxTokens: 8000,
+      maxTokens: 4000,
       temperature: 0.2,
-      // Budget: 16s primary + 16s fallback = 32s, comfortably inside the 52s
-      // endpoint deadline and the 60s serverless limit (no 504).
-      timeoutMs: 16000,
+      // Budget: 20s primary + 20s fallback = 40s, inside the 52s endpoint
+      // deadline and the 60s serverless limit (no 504).
+      timeoutMs: 20000,
       maxRetries: 0,
       userId: ctx?.userId,
       requestId: ctx?.requestId,

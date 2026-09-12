@@ -21,16 +21,29 @@
 import { routeAIRequest, NormalizedRequest } from './aiRouter';
 
 export type CatalogFieldType =
-  | 'text' | 'textarea' | 'number' | 'currency' | 'weight'
-  | 'date' | 'boolean' | 'select' | 'multiselect';
+  'text' | 'textarea' | 'number' | 'currency' | 'weight' | 'date' | 'boolean' | 'select' | 'multiselect';
 
 export type CatalogFieldScope = 'item' | 'variant' | 'order' | 'customer';
 
 /** Core POS fields a generated field can bind to (so existing screens keep working). */
 export type CatalogCoreBinding =
-  | 'name' | 'sku' | 'barcode' | 'category' | 'brand' | 'costPrice' | 'sellingPrice'
-  | 'stock' | 'minStock' | 'unit' | 'description' | 'duration' | 'assignedStaff'
-  | 'appointmentRequired' | 'commissionRate' | 'requirements' | 'taxRate';
+  | 'name'
+  | 'sku'
+  | 'barcode'
+  | 'category'
+  | 'brand'
+  | 'costPrice'
+  | 'sellingPrice'
+  | 'stock'
+  | 'minStock'
+  | 'unit'
+  | 'description'
+  | 'duration'
+  | 'assignedStaff'
+  | 'appointmentRequired'
+  | 'commissionRate'
+  | 'requirements'
+  | 'taxRate';
 
 export interface CatalogField {
   key: string;
@@ -95,18 +108,51 @@ export interface CatalogRequest {
   existingNotes?: string;
 }
 
-const ALL_TYPES: CatalogFieldType[] = ['text', 'textarea', 'number', 'currency', 'weight', 'date', 'boolean', 'select', 'multiselect'];
+const ALL_TYPES: CatalogFieldType[] = [
+  'text',
+  'textarea',
+  'number',
+  'currency',
+  'weight',
+  'date',
+  'boolean',
+  'select',
+  'multiselect',
+];
 const ALL_SCOPES: CatalogFieldScope[] = ['item', 'variant', 'order', 'customer'];
 const ALL_CORES: CatalogCoreBinding[] = [
-  'name', 'sku', 'barcode', 'category', 'brand', 'costPrice', 'sellingPrice', 'stock',
-  'minStock', 'unit', 'description', 'duration', 'assignedStaff', 'appointmentRequired',
-  'commissionRate', 'requirements', 'taxRate',
+  'name',
+  'sku',
+  'barcode',
+  'category',
+  'brand',
+  'costPrice',
+  'sellingPrice',
+  'stock',
+  'minStock',
+  'unit',
+  'description',
+  'duration',
+  'assignedStaff',
+  'appointmentRequired',
+  'commissionRate',
+  'requirements',
+  'taxRate',
 ];
 
 export const NEUTRAL_CAPABILITIES: CatalogCapabilities = {
-  barcodes: false, sku: false, stock: false, variants: false, batchTracking: false,
-  serialTracking: false, expiry: false, weightBased: false, appointments: false,
-  suppliers: false, loyalty: false, onlineStore: false,
+  barcodes: false,
+  sku: false,
+  stock: false,
+  variants: false,
+  batchTracking: false,
+  serialTracking: false,
+  expiry: false,
+  weightBased: false,
+  appointments: false,
+  suppliers: false,
+  loyalty: false,
+  onlineStore: false,
 };
 
 // ─── Prompt ──────────────────────────────────────────────────────────────────
@@ -165,10 +211,7 @@ OUTPUT: Return ONLY strict JSON (no markdown fences, no commentary) with this ex
 Always bind "name" and "sellingPrice" fields to their core counterparts when included.`;
 
 export function buildCatalogUserPrompt(req: CatalogRequest): string {
-  const lines = [
-    'BUSINESS REQUIREMENTS (source of truth):',
-    req.businessRequirements || '(none provided)',
-  ];
+  const lines = ['BUSINESS REQUIREMENTS (source of truth):', req.businessRequirements || '(none provided)'];
   if (req.businessName) lines.push(`\nBusiness name: ${req.businessName}`);
   if (req.industry) lines.push(`Stated industry: ${req.industry}`);
   if (req.businessModel) lines.push(`Business model: ${req.businessModel}`);
@@ -221,16 +264,19 @@ function toField(raw: any): CatalogField | null {
   if (type === 'select' || type === 'multiselect') {
     if (!field.options || field.options.length === 0) field.options = ['Other'];
   }
-  const unit = safeStr(raw.unit, 20); if (unit) field.unit = unit;
-  const help = safeStr(raw.help, 160); if (help) field.help = help;
-  const examples = safeStrArr(raw.examples, 6, 60); if (examples) field.examples = examples;
+  const unit = safeStr(raw.unit, 20);
+  if (unit) field.unit = unit;
+  const help = safeStr(raw.help, 160);
+  if (help) field.help = help;
+  const examples = safeStrArr(raw.examples, 6, 60);
+  if (examples) field.examples = examples;
   if (ALL_CORES.includes(raw.core)) field.core = raw.core;
   if (raw.safetyCritical === true) field.safetyCritical = true;
   return field;
 }
 
 function hasWeightField(fields: CatalogField[]): boolean {
-  return fields.some(f => f.type === 'weight' || /weight|gram|kg|karat|tola|carat|purity/i.test(f.key));
+  return fields.some((f) => f.type === 'weight' || /weight|gram|kg|karat|tola|carat|purity/i.test(f.key));
 }
 
 function toCapabilities(raw: any, fields: CatalogField[]): CatalogCapabilities {
@@ -241,27 +287,35 @@ function toCapabilities(raw: any, fields: CatalogField[]): CatalogCapabilities {
     }
   }
   const has = (pred: (f: CatalogField) => boolean) => fields.some(pred);
-  const scopes = (s: CatalogFieldScope) => fields.filter(f => f.scope === s);
-  if (has(f => f.key === 'barcode' || f.core === 'barcode')) caps.barcodes = true;
-  if (has(f => f.key === 'sku' || f.core === 'sku')) caps.sku = true;
-  if (has(f => f.core === 'stock' || f.key === 'stock')) caps.stock = true;
+  const scopes = (s: CatalogFieldScope) => fields.filter((f) => f.scope === s);
+  if (has((f) => f.key === 'barcode' || f.core === 'barcode')) caps.barcodes = true;
+  if (has((f) => f.key === 'sku' || f.core === 'sku')) caps.sku = true;
+  if (has((f) => f.core === 'stock' || f.key === 'stock')) caps.stock = true;
   if (scopes('variant').length > 0) caps.variants = true;
-  if (has(f => f.key.includes('batch'))) caps.batchTracking = true;
-  if (has(f => f.key.includes('serial') || f.key.includes('imei'))) caps.serialTracking = true;
-  if (has(f => f.key.includes('expiry') || f.key.includes('expiration'))) caps.expiry = true;
+  if (has((f) => f.key.includes('batch'))) caps.batchTracking = true;
+  if (has((f) => f.key.includes('serial') || f.key.includes('imei'))) caps.serialTracking = true;
+  if (has((f) => f.key.includes('expiry') || f.key.includes('expiration'))) caps.expiry = true;
   if (hasWeightField(fields)) caps.weightBased = true;
-  if (scopes('order').some(f => f.key.includes('appointment') || f.key.includes('slot') || f.key.includes('booking'))) caps.appointments = true;
+  if (scopes('order').some((f) => f.key.includes('appointment') || f.key.includes('slot') || f.key.includes('booking')))
+    caps.appointments = true;
   return caps;
 }
 
 /** Guarantee the two universally-necessary catalog anchors exist. */
 function ensureAnchors(fields: CatalogField[]): CatalogField[] {
   const out = [...fields];
-  if (!out.some(f => f.core === 'name' || f.key === 'name')) {
+  if (!out.some((f) => f.core === 'name' || f.key === 'name')) {
     out.unshift({ key: 'name', label: 'Name', type: 'text', scope: 'item', required: true, core: 'name' });
   }
-  if (!out.some(f => f.core === 'sellingPrice' || f.key === 'selling_price' || f.key === 'price')) {
-    out.push({ key: 'selling_price', label: 'Selling Price', type: 'currency', scope: 'item', required: true, core: 'sellingPrice' });
+  if (!out.some((f) => f.core === 'sellingPrice' || f.key === 'selling_price' || f.key === 'price')) {
+    out.push({
+      key: 'selling_price',
+      label: 'Selling Price',
+      type: 'currency',
+      scope: 'item',
+      required: true,
+      core: 'sellingPrice',
+    });
   }
   return out;
 }
@@ -279,8 +333,11 @@ export function sanitizeCatalogSchema(raw: any, req: CatalogRequest): CatalogSch
   }
   const anchored = ensureAnchors(fields);
 
-  const sellingModel = ['unit', 'weight', 'service', 'duration', 'measure', 'mixed', 'custom']
-    .includes(raw?.sellingModel) ? raw.sellingModel : 'unit';
+  const sellingModel = ['unit', 'weight', 'service', 'duration', 'measure', 'mixed', 'custom'].includes(
+    raw?.sellingModel
+  )
+    ? raw.sellingModel
+    : 'unit';
 
   return {
     version: 1,
@@ -318,12 +375,27 @@ export function neutralFallbackSchema(req: CatalogRequest): CatalogSchema {
     fields: [
       { key: 'name', label: 'Name', type: 'text', scope: 'item', required: true, core: 'name' },
       { key: 'category', label: 'Category / Group', type: 'text', scope: 'item', required: false, core: 'category' },
-      { key: 'selling_price', label: 'Selling Price', type: 'currency', scope: 'item', required: true, core: 'sellingPrice' },
-      { key: 'description', label: 'Description', type: 'textarea', scope: 'item', required: false, core: 'description' },
+      {
+        key: 'selling_price',
+        label: 'Selling Price',
+        type: 'currency',
+        scope: 'item',
+        required: true,
+        core: 'sellingPrice',
+      },
+      {
+        key: 'description',
+        label: 'Description',
+        type: 'textarea',
+        scope: 'item',
+        required: false,
+        core: 'description',
+      },
     ],
     capabilities: { ...NEUTRAL_CAPABILITIES },
     workflows: ['pos'],
-    researchNotes: 'AI catalog generation was unavailable; a neutral schema was used instead of assuming a retail template.',
+    researchNotes:
+      'AI catalog generation was unavailable; a neutral schema was used instead of assuming a retail template.',
     confidence: 0.3,
     source: 'fallback',
   };
@@ -366,9 +438,8 @@ export async function generateCatalogSchema(
   // Single attempt: two provider tries (16s + 16s = 32s) must fit inside the
   // endpoint deadline, so the repair pass is disabled here.
   for (let attempt = 0; attempt < 1; attempt++) {
-    const messages = attempt === 0
-      ? baseMessages
-      : [...baseMessages, { role: 'user' as const, content: REPAIR_INSTRUCTION }];
+    const messages =
+      attempt === 0 ? baseMessages : [...baseMessages, { role: 'user' as const, content: REPAIR_INSTRUCTION }];
 
     const normalized: NormalizedRequest & { userId?: string; requestId?: string; businessId?: string } = {
       // NORMAL_CHAT -> deepseek-v4-flash (primary) with gemini-flash-lite-latest
@@ -416,6 +487,3 @@ export async function generateCatalogSchema(
 
   throw lastErr || new Error('AI catalog generation failed.');
 }
-
-
-

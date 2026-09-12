@@ -185,6 +185,7 @@ export function buildCatalogUserPrompt(req: CatalogRequest): string {
 
 function safeStr(v: any, max = 200): string | undefined {
   if (typeof v !== 'string') return undefined;
+  // eslint-disable-next-line no-control-regex -- intentionally strip control characters from model output
   const s = v.replace(/[\u0000-\u001F\u007F]/g, ' ').trim();
   return s ? s.slice(0, max) : undefined;
 }

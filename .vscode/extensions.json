@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "saoudrizwan.claude-dev",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "MermaidChart.vscode-mermaid-chart",
+    "usernamehw.errorlens",
+    "eamodio.gitlens",
+    "rangav.vscode-thunder-client"
+  ],
+  "unwantedRecommendations": []
+}

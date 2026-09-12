@@ -1,9 +1,25 @@
-import { BusinessProfile, CatalogSchema, CatalogField, CatalogCapabilities, CatalogCoreBinding, CatalogFieldScope } from '../types';
+import {
+  BusinessProfile,
+  CatalogSchema,
+  CatalogField,
+  CatalogCapabilities,
+  CatalogCoreBinding,
+  CatalogFieldScope,
+} from '../types';
 
 export const NEUTRAL_CAPABILITIES: CatalogCapabilities = {
-  barcodes: false, sku: false, stock: false, variants: false, batchTracking: false,
-  serialTracking: false, expiry: false, weightBased: false, appointments: false,
-  suppliers: false, loyalty: false, onlineStore: false,
+  barcodes: false,
+  sku: false,
+  stock: false,
+  variants: false,
+  batchTracking: false,
+  serialTracking: false,
+  expiry: false,
+  weightBased: false,
+  appointments: false,
+  suppliers: false,
+  loyalty: false,
+  onlineStore: false,
 };
 
 /**
@@ -22,7 +38,14 @@ export const NEUTRAL_CATALOG_SCHEMA: CatalogSchema = {
   fields: [
     { key: 'name', label: 'Name', type: 'text', scope: 'item', required: true, core: 'name' },
     { key: 'category', label: 'Category / Group', type: 'text', scope: 'item', required: false, core: 'category' },
-    { key: 'selling_price', label: 'Selling Price', type: 'currency', scope: 'item', required: true, core: 'sellingPrice' },
+    {
+      key: 'selling_price',
+      label: 'Selling Price',
+      type: 'currency',
+      scope: 'item',
+      required: true,
+      core: 'sellingPrice',
+    },
     { key: 'description', label: 'Description', type: 'textarea', scope: 'item', required: false, core: 'description' },
   ],
   capabilities: { ...NEUTRAL_CAPABILITIES },
@@ -44,27 +67,35 @@ export function hasAiCatalog(business?: BusinessProfile | null): boolean {
 }
 
 export function fieldsForScope(schema: CatalogSchema, scope: CatalogFieldScope): CatalogField[] {
-  return (schema.fields || []).filter(f => f.scope === scope);
+  return (schema.fields || []).filter((f) => f.scope === scope);
 }
 
 /** Fields that are NOT bound to a core POS column (i.e. free-form dynamic fields). */
 export function dynamicFieldsForScope(schema: CatalogSchema, scope: CatalogFieldScope): CatalogField[] {
-  return fieldsForScope(schema, scope).filter(f => !f.core);
+  return fieldsForScope(schema, scope).filter((f) => !f.core);
 }
 
-export function boundField(schema: CatalogSchema, core: CatalogCoreBinding, scope: CatalogFieldScope = 'item'): CatalogField | undefined {
-  return (schema.fields || []).find(f => f.core === core && f.scope === scope);
+export function boundField(
+  schema: CatalogSchema,
+  core: CatalogCoreBinding,
+  scope: CatalogFieldScope = 'item'
+): CatalogField | undefined {
+  return (schema.fields || []).find((f) => f.core === core && f.scope === scope);
 }
 
 /** Whether a core POS column should be shown for this business. */
 export function isCoreFieldVisible(schema: CatalogSchema, core: CatalogCoreBinding): boolean {
   const c = schema.capabilities || NEUTRAL_CAPABILITIES;
   switch (core) {
-    case 'barcode': return !!c.barcodes;
-    case 'sku': return !!c.sku;
+    case 'barcode':
+      return !!c.barcodes;
+    case 'sku':
+      return !!c.sku;
     case 'stock':
-    case 'minStock': return !!c.stock;
-    default: return true;
+    case 'minStock':
+      return !!c.stock;
+    default:
+      return true;
   }
 }
 

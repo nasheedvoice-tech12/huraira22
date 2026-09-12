@@ -1,0 +1,80 @@
+{
+  // ── Velcora workspace: interconnects Cline, ESLint, Prettier, Error Lens,
+  //    Tailwind CSS IntelliSense, GitLens, Mermaid Chart, Thunder Client. ──
+
+  // ESLint (flat config, lint while you type so Error Lens can surface it)
+  "eslint.enable": true,
+  "eslint.useFlatConfig": true,
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.run": "onType",
+  "eslint.format.enable": false,
+  "eslint.problemsShortFormat": true,
+
+  // Prettier = default formatter (extension bundles Prettier, no dependency needed)
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "prettier.requireConfig": true,
+  "prettier.withConfigOverrides": false,
+  "[json][jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[css][scss]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.wordWrap": "on"
+  },
+
+  // Fix ESLint issues on save, but never churn imports
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // Tailwind CSS IntelliSense (Tailwind v4 is configured in src/index.css)
+  "tailwindCSS.enable": true,
+  "tailwindCSS.experimental.configFile": "src/index.css",
+  "tailwindCSS.classAttributes": ["class", "className", "classList", "className:"],
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on",
+    "other": true,
+    "comments": false
+  },
+
+  // Error Lens (inline diagnostics)
+  "errorLens.enabled": true,
+  "errorLens.excludeBySource": ["ts(2686)"],
+  "errorLens.gutterIconsEnabled": true,
+  "errorLens.statusBarIconsEnabled": false,
+
+  // TypeScript — use the workspace SDK so ESLint/Error Lens and the compiler agree
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+
+  // Keep the workspace fast & clean
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.vercel": true,
+    "**/bun.lock": true,
+    "**/*.log": true
+  },
+  "files.exclude": { "**/.git": true, "**/.DS_Store": true },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true
+  },
+
+  // Mermaid Chart
+  "mermaid-editor.preview.autoUpdate": true,
+
+  // Thunder Client
+  "thunder-client.codeGenLanguage": "javascript (fetch)",
+
+  // Git (GitLens reads this)
+  "git.enableSmartCommit": false,
+  "git.confirmSync": false
+}

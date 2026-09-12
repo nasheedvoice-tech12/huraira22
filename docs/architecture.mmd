@@ -1,0 +1,55 @@
+flowchart LR
+    subgraph CLIENT["Browser — React 19 + Vite + Tailwind v4"]
+        POS["POS Billing"]
+        CHAT["Chats / Ask Velcora"]
+        CAT["Products & Catalog<br/>(DynamicCatalogFields)"]
+        ONB["Onboarding Wizard"]
+        CRED["Credits Wallet"]
+    end
+
+    subgraph EDGE["Vercel"]
+        STATIC["Static Hosting (dist)"]
+        FN["Serverless Function<br/>api/index.ts → Express server.ts"]
+    end
+
+    subgraph ROUTER["Unified AI Router (aiRouter.ts)"]
+        ROUTE["routeAIRequest()"]
+        CB["Circuit breaker<br/>3 failures → 60s cooldown"]
+        HEALTH["Provider health"]
+    end
+
+    subgraph PROVIDERS["AI Providers"]
+        DS["DeepSeek V4 Flash / V4 Pro<br/>PRIMARY"]
+        GM["Gemini flash-lite / 3.5-flash<br/>AUTOMATIC FALLBACK"]
+    end
+
+    subgraph FIREBASE["Firebase project admin-3666e"]
+        AUTH["Firebase Auth<br/>(Google + Email)"]
+        FS["Cloud Firestore<br/>tenants · products · orders"]
+    end
+
+    subgraph CREDITS["Credit System (creditManager.ts)"]
+        RES["reserveCredits"]
+        SET["settleCredits (once)"]
+        REF["refundReservation"]
+    end
+
+    POS --> STATIC
+    CHAT --> FN
+    CAT --> FN
+    ONB --> FN
+    CRED --> FN
+    STATIC --> FN
+
+    FN --> ROUTE
+    ROUTE --> CB
+    CB --> HEALTH
+    ROUTE -->|1. primary| DS
+    ROUTE -->|2. automatic failover| GM
+
+    FN --> RES --> SET
+    RES -.->|on failure| REF
+
+    CLIENT --> AUTH
+    CLIENT --> FS
+    FN --> FS

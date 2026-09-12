@@ -1,0 +1,33 @@
+sequenceDiagram
+    autonumber
+    participant U as User (Onboarding / Product Catalog)
+    participant S as Vercel Function<br/>POST /api/ai/catalog-schema
+    participant C as CreditSystem
+    participant R as Unified AI Router
+    participant DS as DeepSeek (primary)
+    participant GM as Gemini (fallback)
+
+    U->>S: businessRequirements
+    S->>C: getWallet (create if new)
+    S->>C: reserveCredits (maxCost)
+    C-->>S: reserved
+
+    S->>R: routeAIRequest(engine=velcora-chat)
+    R->>DS: chat/completions (16s budget)
+    alt DeepSeek answers
+        DS-->>R: JSON schema
+    else slow / 429 / 5xx / timeout
+        R->>GM: generateContent (16s budget)
+        GM-->>R: JSON schema
+    end
+    R-->>S: NormalizedResponse
+
+    alt valid JSON schema
+        S->>S: sanitize + guarantee name/price anchors
+        S->>C: settleCredits (once — never double-charged)
+        S-->>U: { schema, provider, creditsUsed }
+        U->>U: BusinessProfile.catalogSchema<br/>DynamicCatalogFields renders fields
+    else unusable / deadline
+        S->>C: refundReservation (0 credits charged)
+        S-->>U: neutral schema + degraded flag
+    end

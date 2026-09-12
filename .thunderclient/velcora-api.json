@@ -1,0 +1,96 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Velcora API",
+  "collectionId": "velcora-api-collection",
+  "dateAdded": "2026-09-12T00:00:00.000Z",
+  "info": {
+    "name": "Velcora API",
+    "_postman_id": "velcora-api-collection"
+  },
+  "requests": [
+    {
+      "id": "velcora-providers-health",
+      "name": "AI Providers Health (DeepSeek + Gemini + routing)",
+      "url": "http://localhost:3000/api/ai/providers/health",
+      "method": "GET",
+      "headers": [],
+      "tests": [{ "value": "res.data.deepseek.configured", "type": "custom", "action": "assert" }]
+    },
+    {
+      "id": "velcora-deepseek-health",
+      "name": "DeepSeek live ping",
+      "url": "http://localhost:3000/api/ai/deepseek/health",
+      "method": "GET",
+      "headers": []
+    },
+    {
+      "id": "velcora-gemini-health",
+      "name": "Gemini live ping",
+      "url": "http://localhost:3000/api/ai/gemini/health",
+      "method": "GET",
+      "headers": []
+    },
+    {
+      "id": "velcora-credits-wallet",
+      "name": "Credits Wallet + Ledger",
+      "url": "http://localhost:3000/api/credits/wallet",
+      "method": "GET",
+      "headers": [
+        { "key": "x-user-id", "value": "thunder-test-user" },
+        { "key": "x-tenant-id", "value": "thunder-tenant" }
+      ]
+    },
+    {
+      "id": "velcora-ask",
+      "name": "Ask Velcora AI (Chats)",
+      "url": "http://localhost:3000/api/ai/ask",
+      "method": "POST",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" },
+        { "key": "x-user-id", "value": "thunder-test-user" },
+        { "key": "x-tenant-id", "value": "thunder-tenant" }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"message\": \"Reply with exactly: THUNDER-OK\",\n  \"modelId\": \"chat\",\n  \"history\": [],\n  \"businessContext\": { \"businessId\": \"thunder-tenant\", \"industry\": \"retail\" }\n}"
+      }
+    },
+    {
+      "id": "velcora-catalog-schema",
+      "name": "Universal AI Catalog Schema (gold/doctor/meat/…)",
+      "url": "http://localhost:3000/api/ai/catalog-schema",
+      "method": "POST",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" },
+        { "key": "x-user-id", "value": "thunder-test-user" },
+        { "key": "x-tenant-id", "value": "thunder-tenant" }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"businessRequirements\": \"We sell gold jewellery priced by weight (g/tola) with purity/karat, making charges and stone weight.\",\n  \"industry\": \"gold\"\n}"
+      }
+    },
+    {
+      "id": "velcora-prod-health",
+      "name": "PRODUCTION — AI Providers Health",
+      "url": "https://huraira4545.vercel.app/api/ai/providers/health",
+      "method": "GET",
+      "headers": []
+    },
+    {
+      "id": "velcora-prod-catalog",
+      "name": "PRODUCTION — Universal AI Catalog Schema",
+      "url": "https://huraira4545.vercel.app/api/ai/catalog-schema",
+      "method": "POST",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" },
+        { "key": "x-user-id", "value": "thunder-prod-user" },
+        { "key": "x-tenant-id", "value": "thunder-prod-tenant" }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"businessRequirements\": \"Hair and beauty salon. Services with duration and stylist, plus some retail products.\",\n  \"industry\": \"salon\"\n}"
+      }
+    }
+  ]
+}

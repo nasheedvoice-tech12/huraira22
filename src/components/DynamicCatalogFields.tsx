@@ -39,9 +39,7 @@ export const DynamicCatalogFields: React.FC<Props> = ({ schema, values, onChange
         ) : null}
       </label>
     );
-    const help = f.help ? (
-      <p className="mt-1 text-[10px] text-slate-400 dark:text-[#64748B]">{f.help}</p>
-    ) : null;
+    const help = f.help ? <p className="mt-1 text-[10px] text-slate-400 dark:text-[#64748B]">{f.help}</p> : null;
 
     switch (f.type) {
       case 'textarea':
@@ -52,7 +50,7 @@ export const DynamicCatalogFields: React.FC<Props> = ({ schema, values, onChange
               rows={2}
               value={value ?? ''}
               required={f.required}
-              onChange={e => onChange(f.key, e.target.value)}
+              onChange={(e) => onChange(f.key, e.target.value)}
               placeholder={f.examples?.[0] || f.help || ''}
               className={inputCls}
             />
@@ -65,7 +63,7 @@ export const DynamicCatalogFields: React.FC<Props> = ({ schema, values, onChange
             <input
               type="checkbox"
               checked={!!value}
-              onChange={e => onChange(f.key, e.target.checked)}
+              onChange={(e) => onChange(f.key, e.target.checked)}
               className="w-4 h-4 accent-primary"
             />
             <span className="font-bold text-slate-600 dark:text-[#94A3B8]">{f.label}</span>
@@ -76,9 +74,18 @@ export const DynamicCatalogFields: React.FC<Props> = ({ schema, values, onChange
         return (
           <div key={f.key}>
             {label}
-            <select value={value ?? ''} required={f.required} onChange={e => onChange(f.key, e.target.value)} className={inputCls}>
+            <select
+              value={value ?? ''}
+              required={f.required}
+              onChange={(e) => onChange(f.key, e.target.value)}
+              className={inputCls}
+            >
               <option value="">Select…</option>
-              {(f.options || []).map(o => <option key={o} value={o}>{o}</option>)}
+              {(f.options || []).map((o) => (
+                <option key={o} value={o}>
+                  {o}
+                </option>
+              ))}
             </select>
             {help}
           </div>
@@ -88,14 +95,14 @@ export const DynamicCatalogFields: React.FC<Props> = ({ schema, values, onChange
           <div key={f.key} className="sm:col-span-2">
             {label}
             <div className="flex flex-wrap gap-1.5">
-              {(f.options || []).map(o => {
+              {(f.options || []).map((o) => {
                 const arr: string[] = Array.isArray(value) ? value : [];
                 const on = arr.includes(o);
                 return (
                   <button
                     type="button"
                     key={o}
-                    onClick={() => onChange(f.key, on ? arr.filter(x => x !== o) : [...arr, o])}
+                    onClick={() => onChange(f.key, on ? arr.filter((x) => x !== o) : [...arr, o])}
                     className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition ${
                       on
                         ? 'bg-primary text-white border-transparent'
@@ -115,8 +122,8 @@ export const DynamicCatalogFields: React.FC<Props> = ({ schema, values, onChange
           f.type === 'number' || f.type === 'currency' || f.type === 'weight'
             ? 'number'
             : f.type === 'date'
-            ? 'date'
-            : 'text';
+              ? 'date'
+              : 'text';
         return (
           <div key={f.key}>
             {label}
@@ -125,7 +132,7 @@ export const DynamicCatalogFields: React.FC<Props> = ({ schema, values, onChange
               step={f.type === 'weight' ? '0.001' : 'any'}
               value={value ?? ''}
               required={f.required}
-              onChange={e => onChange(f.key, e.target.value)}
+              onChange={(e) => onChange(f.key, e.target.value)}
               placeholder={f.examples?.[0] || f.help || ''}
               className={inputCls}
             />
@@ -144,9 +151,7 @@ export const DynamicCatalogFields: React.FC<Props> = ({ schema, values, onChange
           {title || `${schema.itemLabelSingular} details`}
         </span>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {fields.map(renderField)}
-      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{fields.map(renderField)}</div>
     </div>
   );
 };
